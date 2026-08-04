@@ -19,6 +19,7 @@ spec:
         - name: search-service
           image: amazon-clone/search-service:latest
           imagePullPolicy: IfNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8013
           envFrom:

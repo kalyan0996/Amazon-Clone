@@ -19,6 +19,7 @@ spec:
         - name: auth-service
           image: amazon-clone/auth-service:latest
           imagePullPolicy: IfNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8001
           envFrom:

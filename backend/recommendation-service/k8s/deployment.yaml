@@ -19,6 +19,7 @@ spec:
         - name: recommendation-service
           image: amazon-clone/recommendation-service:latest
           imagePullPolicy: IfNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8012
           envFrom:

@@ -19,6 +19,7 @@ spec:
         - name: analytics-service
           image: amazon-clone/analytics-service:latest
           imagePullPolicy: IfNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8018
           envFrom:

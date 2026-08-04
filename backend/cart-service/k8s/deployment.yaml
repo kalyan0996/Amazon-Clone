@@ -19,6 +19,7 @@ spec:
         - name: cart-service
           image: amazon-clone/cart-service:latest
           imagePullPolicy: IfNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8006
           envFrom:

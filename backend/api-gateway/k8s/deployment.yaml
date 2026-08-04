@@ -19,6 +19,7 @@ spec:
         - name: api-gateway
           image: amazon-clone/api-gateway:latest
           imagePullPolicy: IfNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           envFrom:

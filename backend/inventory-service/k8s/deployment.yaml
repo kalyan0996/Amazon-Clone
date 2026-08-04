@@ -19,6 +19,7 @@ spec:
         - name: inventory-service
           image: amazon-clone/inventory-service:latest
           imagePullPolicy: IfNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8005
           envFrom:
