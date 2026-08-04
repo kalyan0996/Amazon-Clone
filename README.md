@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Amazon Clone — Microservices Platform
 
 A scaffolded, Kubernetes-native e-commerce platform: 20 Django microservices behind
@@ -583,4 +582,4 @@ On Kind/K8s, everything is reachable through the ingress host
 - GraphQL federation layer alongside REST in `api-gateway`.
 - Event schema registry (e.g. Avro + Schema Registry) for RabbitMQ payload contracts.
 - OpenFeature-based feature flagging per service.
->>>>>>> 959ed5cb636805c8a568902816b7f63b9c83c8f5
+
