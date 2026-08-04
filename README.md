@@ -1,7 +1,4 @@
-
-# Amazon Clone - Complete Deployment Guide (AWS EC2 → Kubernetes → ArgoCD)
-
-# Amazon Clone Deployment Guide
+# Amazon Clone — Complete Deployment Guide (AWS EC2 → Kubernetes → ArgoCD)
 
 This guide explains how to deploy the complete Amazon Clone project from scratch on a fresh AWS EC2 Ubuntu server.
 
@@ -48,7 +45,7 @@ Deploy All Microservices
 Recommended EC2
 
 * Ubuntu 22.04
-* t3.large (minimum)
+* t3.large (minimum) — t3.xlarge if you also want headroom for local Docker Compose testing
 * 30GB Storage
 
 ---
@@ -234,7 +231,66 @@ docker version
 
 ---
 
-# Step 6 : Install kubectl
+# Step 6 : Configure Environment Variables
+
+Every backend service ships with an `.env.example`. Copy each to `.env` before building or deploying.
+
+```
+cd ~/Amazon-Clone/backend
+
+for d in */; do
+  service="${d%/}"
+  if [ -f "$service/.env.example" ]; then
+    cp "$service/.env.example" "$service/.env"
+  fi
+done
+```
+
+Edit each `.env` with real values (DB credentials, secret keys, service URLs):
+
+```
+nano auth-service/.env
+```
+
+Do the same for the frontend:
+
+```
+cd ~/Amazon-Clone/frontend
+
+cp .env.example .env
+```
+
+Never commit real `.env` files to Git.
+
+---
+
+# Step 7 (Optional) : Sanity-Check Locally with Docker Compose
+
+Before touching Kubernetes, confirm the app works with plain Docker Compose.
+
+```
+cd ~/Amazon-Clone
+
+docker compose -f docker-compose.dev.yml up --build -d
+
+docker compose -f docker-compose.dev.yml ps
+```
+
+Check logs for any service
+
+```
+docker compose -f docker-compose.dev.yml logs -f api-gateway
+```
+
+Tear it down once confirmed, so it doesn't compete with Kubernetes for resources
+
+```
+docker compose -f docker-compose.dev.yml down
+```
+
+---
+
+# Step 8 : Install kubectl
 
 ```
 curl -LO https://dl.k8s.io/release/$(curl -L -s \
@@ -253,7 +309,7 @@ kubectl version --client
 
 ---
 
-# Step 7 : Install Kind
+# Step 9 : Install Kind
 
 ```
 curl -Lo ./kind \
@@ -272,7 +328,7 @@ kind version
 
 ---
 
-# Step 8 : Create Kubernetes Cluster
+# Step 10 : Create Kubernetes Cluster
 
 Go to
 
@@ -303,7 +359,7 @@ kind-control-plane
 
 ---
 
-# Step 9 : Install Helm
+# Step 11 : Install Helm
 
 ```
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -317,7 +373,7 @@ helm version
 
 ---
 
-# Step 10 : Deploy Base Kubernetes Resources
+# Step 12 : Deploy Base Kubernetes Resources
 
 ```
 cd ~/Amazon-Clone/infrastructure/kubernetes/base
@@ -337,7 +393,7 @@ kubectl get pvc
 
 ---
 
-# Step 11 : Build Docker Images
+# Step 13 : Build Docker Images
 
 Go to
 
@@ -357,7 +413,7 @@ This builds every service.
 
 ---
 
-# Step 12 : Load Images into Kind
+# Step 14 : Load Images into Kind
 
 ```
 cd ~/Amazon-Clone/infrastructure/kind
@@ -375,7 +431,7 @@ docker images
 
 ---
 
-# Step 13 : Install NGINX Ingress
+# Step 15 : Install NGINX Ingress
 
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
@@ -394,7 +450,7 @@ pod \
 
 ---
 
-# Step 14 : Install ArgoCD
+# Step 16 : Install ArgoCD
 
 Create namespace
 
@@ -419,7 +475,7 @@ All should become Running.
 
 ---
 
-# Step 15 : Expose ArgoCD
+# Step 17 : Expose ArgoCD
 
 ```
 kubectl port-forward svc/argocd-server \
@@ -435,9 +491,11 @@ https://localhost:8080
 
 Ignore browser certificate warning.
 
+If you're connecting from your local machine to the EC2 instance rather than a browser running on the server itself, add `--address 0.0.0.0` to the port-forward command and open `https://YOUR_PUBLIC_IP:8080` instead — just make sure port 8080 is allowed in the EC2 security group.
+
 ---
 
-# Step 16 : Get ArgoCD Password
+# Step 18 : Get ArgoCD Password
 
 Username
 
@@ -454,11 +512,15 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 echo
 ```
 
-Login.
+Login, then change the password:
+
+```
+argocd account update-password
+```
 
 ---
 
-# Step 17 : Deploy App of Apps
+# Step 19 : Deploy App of Apps
 
 Go to
 
@@ -507,7 +569,7 @@ wishlist-service
 
 ---
 
-# Step 18 : Verify Pods
+# Step 20 : Verify Pods
 
 ```
 kubectl get pods -A
@@ -527,7 +589,7 @@ kubectl get deploy -A
 
 ---
 
-# Step 19 : Access the Frontend
+# Step 21 : Access the Frontend
 
 If using port-forward:
 
@@ -545,7 +607,7 @@ If exposed using Ingress, browse to your configured host or EC2 public IP.
 
 ---
 
-# Step 20 : View Logs
+# Step 22 : View Logs
 
 Single pod
 
@@ -567,7 +629,7 @@ kubectl logs POD_NAME -n default
 
 ---
 
-# Step 21 : Restart Deployment
+# Step 23 : Restart Deployment
 
 ```
 kubectl rollout restart deployment DEPLOYMENT_NAME
@@ -581,7 +643,7 @@ kubectl rollout restart deployment auth-service
 
 ---
 
-# Step 22 : Scaling
+# Step 24 : Scaling
 
 ```
 kubectl scale deployment auth-service --replicas=3
@@ -595,13 +657,73 @@ kubectl get pods
 
 ---
 
-# Step 23 : Delete Cluster
+# Step 25 (Optional) : Enable Monitoring
+
+The repo ships Prometheus, Alertmanager, Loki, and Tempo configs.
+
+Quick local check via Docker Compose:
+
+```
+cd ~/Amazon-Clone
+
+docker compose -f docker-compose.monitoring.yml up -d
+```
+
+In-cluster, apply configs under `infrastructure/monitoring/` and `infrastructure/logging/` using whichever Helm chart your team standardizes on (e.g. `kube-prometheus-stack`), pointing at:
+
+```
+infrastructure/monitoring/prometheus.yml
+infrastructure/monitoring/alertmanager.yml
+infrastructure/monitoring/tempo.yml
+infrastructure/logging/loki-config.yml
+infrastructure/logging/promtail-config.yml
+```
+
+---
+
+# Step 26 : Delete Cluster
 
 ```
 cd ~/Amazon-Clone/infrastructure/kind
 
 ./delete-cluster.sh
 ```
+
+---
+
+# Troubleshooting
+
+Pods stuck in `Pending`
+
+```
+kubectl describe pod POD_NAME -n NAMESPACE
+```
+
+`ImagePullBackOff` — image not loaded into Kind
+
+```
+cd ~/Amazon-Clone/infrastructure/kind
+
+./load-images.sh
+```
+
+ArgoCD app stuck `OutOfSync`
+
+```
+argocd app diff APP_NAME
+```
+
+Can't reach the ArgoCD UI — confirm port 8080 is open in the EC2 security group, and that the `port-forward` process is still running. Use `screen` or `tmux` so it survives your SSH session ending:
+
+```
+screen -S argocd
+
+kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0
+```
+
+(Press `Ctrl+A` then `D` to detach without killing it.)
+
+Django migrations failing — check `.env` values for the affected service, especially database host/credentials.
 
 ---
 
@@ -712,6 +834,10 @@ Clone GitHub Repository
         ↓
 Install Docker
         ↓
+Configure .env files
+        ↓
+(Optional) Sanity-check with Docker Compose
+        ↓
 Install kubectl
         ↓
 Install Kind
@@ -747,13 +873,14 @@ You have successfully deployed the Amazon Clone project by following this workfl
 
 1. Created an AWS EC2 Ubuntu instance.
 2. Connected via SSH.
-3. Installed Git, Docker, kubectl, Kind, and Helm.
-4. Cloned the GitHub repository.
-5. Created a local Kubernetes cluster with Kind.
-6. Built all service Docker images.
-7. Loaded the images into the Kind cluster.
-8. Installed the NGINX Ingress Controller.
-9. Installed and configured ArgoCD.
-10. Deployed all microservices using the App of Apps pattern.
-11. Verified deployments, services, pods, and ingress.
-12. Accessed the application and used ArgoCD for GitOps-based management.
+3. Installed Git, configured environment variables, and optionally sanity-checked with Docker Compose.
+4. Installed Docker, kubectl, Kind, and Helm.
+5. Cloned the GitHub repository.
+6. Created a local Kubernetes cluster with Kind.
+7. Built all service Docker images.
+8. Loaded the images into the Kind cluster.
+9. Installed the NGINX Ingress Controller.
+10. Installed and configured ArgoCD.
+11. Deployed all microservices using the App of Apps pattern.
+12. Verified deployments, services, pods, and ingress.
+13. Accessed the application and used ArgoCD for GitOps-based management.
