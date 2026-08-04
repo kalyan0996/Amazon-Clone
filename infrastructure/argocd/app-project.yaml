@@ -3,13 +3,20 @@ kind: AppProject
 metadata:
   name: amazon-clone
   namespace: argocd
+
 spec:
-  description: Amazon-clone microservices platform
+  description: Amazon Clone Microservices
+
   sourceRepos:
     - "*"
+
   destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+
     - namespace: amazon-clone
       server: https://kubernetes.default.svc
+
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"

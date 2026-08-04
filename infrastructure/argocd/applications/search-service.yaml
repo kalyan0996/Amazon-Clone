@@ -6,7 +6,7 @@ metadata:
 spec:
   project: amazon-clone
   source:
-    repoURL: https://example.com/amazon-clone.git
+    repoURL: https://github.com/kalyan0996/Amazon-Clone.git
     targetRevision: main
     path: backend/search-service/k8s
   destination:

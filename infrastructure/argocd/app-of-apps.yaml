@@ -3,15 +3,19 @@ kind: Application
 metadata:
   name: amazon-clone-app-of-apps
   namespace: argocd
+
 spec:
   project: amazon-clone
+
   source:
-    repoURL: https://example.com/amazon-clone.git
+    repoURL: https://github.com/kalyan0996/Amazon-Clone.git
     targetRevision: main
     path: infrastructure/argocd/applications
+
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
+
   syncPolicy:
     automated:
       prune: true
