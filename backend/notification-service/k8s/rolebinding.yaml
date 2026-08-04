@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: notification-service
+subjects:
+  - kind: ServiceAccount
+    name: notification-service
+roleRef:
+  kind: Role
+  name: notification-service
+  apiGroup: rbac.authorization.k8s.io

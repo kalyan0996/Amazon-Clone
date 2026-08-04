@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: shipping-service
+subjects:
+  - kind: ServiceAccount
+    name: shipping-service
+roleRef:
+  kind: Role
+  name: shipping-service
+  apiGroup: rbac.authorization.k8s.io

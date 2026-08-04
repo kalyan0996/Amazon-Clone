@@ -1,0 +1,36 @@
+version: "3.9"
+
+networks:
+  amazon-clone:
+    driver: bridge
+
+services:
+  nginx:
+    build:
+      context: ./infrastructure/docker/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+      - frontend
+    networks:
+      - amazon-clone
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    networks:
+      - amazon-clone
+
+  api-gateway:
+    build:
+      context: ./backend/api-gateway
+    restart: unless-stopped
+    networks:
+      - amazon-clone
+
+# NOTE: In production, each service is deployed via Kubernetes manifests
+# under backend/<service>/k8s or the Helm chart in infrastructure/helm.
+# This compose file covers only the edge (nginx + gateway + frontend) for
+# lightweight production-like smoke testing.

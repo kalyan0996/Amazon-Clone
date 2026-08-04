@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-service
+  labels:
+    app: search-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: search-service
+  template:
+    metadata:
+      labels:
+        app: search-service
+    spec:
+      serviceAccountName: search-service
+      containers:
+        - name: search-service
+          image: amazon-clone/search-service:latest
+          ports:
+            - containerPort: 8013
+          envFrom:
+            - configMapRef:
+                name: search-service-config
+            - secretRef:
+                name: search-service-secret
+          readinessProbe:
+            httpGet:
+              path: /readyz/
+              port: 8013
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz/
+              port: 8013
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

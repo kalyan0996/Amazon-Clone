@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review-service
+  labels:
+    app: review-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: review-service
+  template:
+    metadata:
+      labels:
+        app: review-service
+    spec:
+      serviceAccountName: review-service
+      containers:
+        - name: review-service
+          image: amazon-clone/review-service:latest
+          ports:
+            - containerPort: 8010
+          envFrom:
+            - configMapRef:
+                name: review-service-config
+            - secretRef:
+                name: review-service-secret
+          readinessProbe:
+            httpGet:
+              path: /readyz/
+              port: 8010
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz/
+              port: 8010
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

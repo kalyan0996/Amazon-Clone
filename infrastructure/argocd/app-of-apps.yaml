@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: amazon-clone-app-of-apps
+  namespace: argocd
+spec:
+  project: amazon-clone
+  source:
+    repoURL: https://example.com/amazon-clone.git
+    targetRevision: main
+    path: infrastructure/argocd/applications
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

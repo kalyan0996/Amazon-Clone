@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping-service
+  labels:
+    app: shipping-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shipping-service
+  template:
+    metadata:
+      labels:
+        app: shipping-service
+    spec:
+      serviceAccountName: shipping-service
+      containers:
+        - name: shipping-service
+          image: amazon-clone/shipping-service:latest
+          ports:
+            - containerPort: 8009
+          envFrom:
+            - configMapRef:
+                name: shipping-service-config
+            - secretRef:
+                name: shipping-service-secret
+          readinessProbe:
+            httpGet:
+              path: /readyz/
+              port: 8009
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz/
+              port: 8009
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rating-service
+  labels:
+    app: rating-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rating-service
+  template:
+    metadata:
+      labels:
+        app: rating-service
+    spec:
+      serviceAccountName: rating-service
+      containers:
+        - name: rating-service
+          image: amazon-clone/rating-service:latest
+          ports:
+            - containerPort: 8011
+          envFrom:
+            - configMapRef:
+                name: rating-service-config
+            - secretRef:
+                name: rating-service-secret
+          readinessProbe:
+            httpGet:
+              path: /readyz/
+              port: 8011
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz/
+              port: 8011
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

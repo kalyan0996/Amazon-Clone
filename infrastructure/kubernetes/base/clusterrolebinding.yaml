@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: amazon-clone-reader-binding
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: amazon-clone
+roleRef:
+  kind: ClusterRole
+  name: amazon-clone-reader
+  apiGroup: rbac.authorization.k8s.io

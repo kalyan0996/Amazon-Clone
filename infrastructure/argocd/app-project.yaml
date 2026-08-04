@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: amazon-clone
+  namespace: argocd
+spec:
+  description: Amazon-clone microservices platform
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: amazon-clone
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"

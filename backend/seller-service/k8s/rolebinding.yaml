@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: seller-service
+subjects:
+  - kind: ServiceAccount
+    name: seller-service
+roleRef:
+  kind: Role
+  name: seller-service
+  apiGroup: rbac.authorization.k8s.io

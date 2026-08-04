@@ -1,0 +1,297 @@
+version: "3.9"
+
+networks:
+  amazon-clone:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - amazon-clone
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - amazon-clone
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env.example
+    networks:
+      - amazon-clone
+
+  api-gateway:
+    build:
+      context: ./backend/api-gateway
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/api-gateway/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  auth-service:
+    build:
+      context: ./backend/auth-service
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./backend/auth-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  user-service:
+    build:
+      context: ./backend/user-service
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./backend/user-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  product-service:
+    build:
+      context: ./backend/product-service
+    ports:
+      - "8003:8003"
+    env_file:
+      - ./backend/product-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  catalog-service:
+    build:
+      context: ./backend/catalog-service
+    ports:
+      - "8004:8004"
+    env_file:
+      - ./backend/catalog-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  inventory-service:
+    build:
+      context: ./backend/inventory-service
+    ports:
+      - "8005:8005"
+    env_file:
+      - ./backend/inventory-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  cart-service:
+    build:
+      context: ./backend/cart-service
+    ports:
+      - "8006:8006"
+    env_file:
+      - ./backend/cart-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  order-service:
+    build:
+      context: ./backend/order-service
+    ports:
+      - "8007:8007"
+    env_file:
+      - ./backend/order-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  payment-service:
+    build:
+      context: ./backend/payment-service
+    ports:
+      - "8008:8008"
+    env_file:
+      - ./backend/payment-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  shipping-service:
+    build:
+      context: ./backend/shipping-service
+    ports:
+      - "8009:8009"
+    env_file:
+      - ./backend/shipping-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  review-service:
+    build:
+      context: ./backend/review-service
+    ports:
+      - "8010:8010"
+    env_file:
+      - ./backend/review-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  rating-service:
+    build:
+      context: ./backend/rating-service
+    ports:
+      - "8011:8011"
+    env_file:
+      - ./backend/rating-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  recommendation-service:
+    build:
+      context: ./backend/recommendation-service
+    ports:
+      - "8012:8012"
+    env_file:
+      - ./backend/recommendation-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  search-service:
+    build:
+      context: ./backend/search-service
+    ports:
+      - "8013:8013"
+    env_file:
+      - ./backend/search-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  notification-service:
+    build:
+      context: ./backend/notification-service
+    ports:
+      - "8014:8014"
+    env_file:
+      - ./backend/notification-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  wishlist-service:
+    build:
+      context: ./backend/wishlist-service
+    ports:
+      - "8015:8015"
+    env_file:
+      - ./backend/wishlist-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  seller-service:
+    build:
+      context: ./backend/seller-service
+    ports:
+      - "8016:8016"
+    env_file:
+      - ./backend/seller-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  pricing-service:
+    build:
+      context: ./backend/pricing-service
+    ports:
+      - "8017:8017"
+    env_file:
+      - ./backend/pricing-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  analytics-service:
+    build:
+      context: ./backend/analytics-service
+    ports:
+      - "8018:8018"
+    env_file:
+      - ./backend/analytics-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+  admin-service:
+    build:
+      context: ./backend/admin-service
+    ports:
+      - "8019:8019"
+    env_file:
+      - ./backend/admin-service/.env.example
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - amazon-clone
+
+volumes:
+  postgres_data:

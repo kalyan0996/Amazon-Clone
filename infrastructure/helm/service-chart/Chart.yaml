@@ -1,0 +1,6 @@
+apiVersion: v2
+name: service-chart
+description: Parameterized Helm chart template — copy this directory per microservice
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
