@@ -18,6 +18,7 @@ spec:
       containers:
         - name: pricing-service
           image: amazon-clone/pricing-service:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8017
           envFrom:

@@ -18,6 +18,7 @@ spec:
       containers:
         - name: order-service
           image: amazon-clone/order-service:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8007
           envFrom:

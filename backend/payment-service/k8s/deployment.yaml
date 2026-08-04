@@ -18,6 +18,7 @@ spec:
       containers:
         - name: payment-service
           image: amazon-clone/payment-service:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8008
           envFrom:

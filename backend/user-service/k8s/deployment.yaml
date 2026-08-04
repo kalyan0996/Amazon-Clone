@@ -18,6 +18,7 @@ spec:
       containers:
         - name: user-service
           image: amazon-clone/user-service:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8002
           envFrom:
