@@ -17,7 +17,8 @@ spec:
       serviceAccountName: shipping-service
       containers:
         - name: shipping-service
-          image: amazon-clone/shipping-service:latest
+          image: amazon-clone-shipping-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:

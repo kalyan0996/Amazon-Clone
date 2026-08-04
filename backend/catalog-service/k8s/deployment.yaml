@@ -17,7 +17,8 @@ spec:
       serviceAccountName: catalog-service
       containers:
         - name: catalog-service
-          image: amazon-clone/catalog-service:latest
+          image: amazon-clone-catalog-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:

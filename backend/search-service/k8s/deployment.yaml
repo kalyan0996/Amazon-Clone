@@ -17,7 +17,8 @@ spec:
       serviceAccountName: search-service
       containers:
         - name: search-service
-          image: amazon-clone/search-service:latest
+          image: amazon-clone-search-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:

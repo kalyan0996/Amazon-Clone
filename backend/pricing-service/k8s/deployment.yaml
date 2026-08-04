@@ -17,7 +17,8 @@ spec:
       serviceAccountName: pricing-service
       containers:
         - name: pricing-service
-          image: amazon-clone/pricing-service:latest
+          image: amazon-clone-pricing-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:

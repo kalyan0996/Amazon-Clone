@@ -17,7 +17,8 @@ spec:
       serviceAccountName: seller-service
       containers:
         - name: seller-service
-          image: amazon-clone/seller-service:latest
+          image: amazon-clone-seller-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:

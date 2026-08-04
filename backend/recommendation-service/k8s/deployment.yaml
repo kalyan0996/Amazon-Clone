@@ -17,7 +17,8 @@ spec:
       serviceAccountName: recommendation-service
       containers:
         - name: recommendation-service
-          image: amazon-clone/recommendation-service:latest
+          image: amazon-clone-recommendation-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:

@@ -17,7 +17,8 @@ spec:
       serviceAccountName: wishlist-service
       containers:
         - name: wishlist-service
-          image: amazon-clone/wishlist-service:latest
+          image: amazon-clone-wishlist-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:

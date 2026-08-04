@@ -17,7 +17,8 @@ spec:
       serviceAccountName: user-service
       containers:
         - name: user-service
-          image: amazon-clone/user-service:latest
+          image: amazon-clone-user-service:latest
+          imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
           ports:
