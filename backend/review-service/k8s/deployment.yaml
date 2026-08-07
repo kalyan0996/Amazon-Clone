@@ -17,7 +17,7 @@ spec:
       serviceAccountName: review-service
       containers:
         - name: review-service
-          image: amazon-clone-review-service:latest
+          image: amazon-clone/review-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

@@ -17,7 +17,7 @@ spec:
       serviceAccountName: api-gateway
       containers:
         - name: api-gateway
-          image: amazon-clone-api-gateway:latest
+          image: amazon-clone/api-gateway:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

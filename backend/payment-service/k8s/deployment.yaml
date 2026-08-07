@@ -17,7 +17,7 @@ spec:
       serviceAccountName: payment-service
       containers:
         - name: payment-service
-          image: amazon-clone-payment-service:latest
+          image: amazon-clone/payment-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

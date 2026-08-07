@@ -17,7 +17,7 @@ spec:
       serviceAccountName: cart-service
       containers:
         - name: cart-service
-          image: amazon-clone-cart-service:latest
+          image: amazon-clone/cart-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

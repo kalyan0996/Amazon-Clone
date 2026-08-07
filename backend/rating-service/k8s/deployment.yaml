@@ -17,7 +17,7 @@ spec:
       serviceAccountName: rating-service
       containers:
         - name: rating-service
-          image: amazon-clone-rating-service:latest
+          image: amazon-clone/rating-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

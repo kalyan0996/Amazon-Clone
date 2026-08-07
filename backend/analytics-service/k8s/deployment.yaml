@@ -17,7 +17,7 @@ spec:
       serviceAccountName: analytics-service
       containers:
         - name: analytics-service
-          image: amazon-clone-analytics-service:latest
+          image: amazon-clone/analytics-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

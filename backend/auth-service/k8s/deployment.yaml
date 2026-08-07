@@ -17,7 +17,7 @@ spec:
       serviceAccountName: auth-service
       containers:
         - name: auth-service
-          image: amazon-clone-auth-service:latest
+          image: amazon-clone/auth-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

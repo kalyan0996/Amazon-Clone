@@ -17,7 +17,7 @@ spec:
       serviceAccountName: notification-service
       containers:
         - name: notification-service
-          image: amazon-clone-notification-service:latest
+          image: amazon-clone/notification-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent

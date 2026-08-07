@@ -17,7 +17,7 @@ spec:
       serviceAccountName: inventory-service
       containers:
         - name: inventory-service
-          image: amazon-clone-inventory-service:latest
+          image: amazon-clone/inventory-service:latest
           imagePullPolicy: Never
           imagePullPolicy: IfNotPresent
           imagePullPolicy: IfNotPresent
