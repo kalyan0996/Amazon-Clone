@@ -9,4 +9,4 @@ class GatewayItemViewSet(viewsets.ModelViewSet):
 
     queryset = GatewayItem.objects.all()
     serializer_class = GatewayItemSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]

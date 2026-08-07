@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "corsheaders",
     "django_celery_results",
     "apps.core",
     "apps.auth",
@@ -23,6 +24,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -100,3 +102,7 @@ LOGGING = {
 
 SERVICE_NAME = "auth-service"
 SERVICE_PORT = 8001
+
+CORS_ALLOWED_ORIGINS = [
+    "http://35.154.105.107:3000",
+]

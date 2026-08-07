@@ -1,8 +1,9 @@
-from rest_framework.routers import DefaultRouter
+from django.urls import path
+from .views import RegisterView, LoginView, RefreshView, MeView
 
-from .views import AuthItemViewSet
-
-router = DefaultRouter()
-router.register(r"items", AuthItemViewSet, basename="auth-item")
-
-urlpatterns = router.urls
+urlpatterns = [
+    path("register/", RegisterView.as_view(), name="auth-register"),
+    path("login/", LoginView.as_view(), name="auth-login"),
+    path("refresh/", RefreshView.as_view(), name="auth-refresh"),
+    path("me/", MeView.as_view(), name="auth-me"),
+]
